@@ -1,0 +1,51 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.IO;
+
+namespace ConsoleApplication41
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string input = Console.ReadLine();
+            bool result = CheckBrackets(input);
+            if (result == true)
+            {
+                Console.WriteLine("Да");
+            }
+            else
+            {
+                Console.WriteLine("Нет");
+            }
+            Console.ReadKey();
+        }
+        static bool CheckBrackets(string input)
+        {
+            Stack<char> stack = new Stack<char>();
+            foreach (char br in input)
+            {
+                if (br == '(' || br == '[' || br == '{')
+                {
+                    stack.Push(br);
+                }
+                else if (br == ')' || br == ']' || br == '}')
+                {
+                    if (stack.Count == 0)
+                    {
+                        return false;
+                    }
+                    char top = stack.Pop();
+                    if ((br == ')' && top != '(') || (br == ']' && top != '[') || (br == '}' && top != '{'))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return stack.Count == 0;
+        }
+    }
+}
