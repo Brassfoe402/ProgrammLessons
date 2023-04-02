@@ -1,0 +1,178 @@
+class HelloWorld
+{
+    static void Main()
+    {
+        Tovar milk = new Tovar("Молоко 2,5%", "12 02 2023", "120", "ООО \"Сливочный мир\"", new List<string> { "12.02.2022", "22", "17.02.2022", "23" }, "200");
+        Tovar meat = new Tovar("Мясо свиное \"Фирменное\"", "01 01 2023", "40", "ЗАО \"У Ашота\"", new List<string> { "13.02.2022", "18", "18.02.2022", "32" }, "50");
+        Tovar bread = new Tovar("Хлеб \"Шотландский\" 400г.", "27 08 2022", "15", "ООО \"Сибирский Пекарь\"", new List<string> { "14.02.2022", "7", "19.02.2022", "9" }, "30");
+        Tovar eggs = new Tovar("Яйцо \"Грусный петушок\" 10 шт.", "14 02 2023", "30", "ЗАО \"Зелёная компания\"", new List<string> { "15.02.2022", "2", "20.02.2022", "4" }, "15");
+        Tovar dumplings = new Tovar("Пельмени \"Гаврики\" 800г.", "30 06 2022", "365", "ООО \"Торг Мира\"", new List<string> { "16.02.2022", "22", "21.02.2022", "45" }, "100");
+
+        List<Tovar> food = new List<Tovar>() { milk, meat, bread, eggs, dumplings };
+
+        int k = 0;
+        while (true)
+        {
+            if (k != 0)
+                Console.ReadLine();
+
+            k = 1;
+            Console.Clear();
+            menu();
+
+            int variation = int.Parse(Console.ReadLine());
+
+            Console.Clear();
+
+            switch (variation)
+            {
+                case 1: Create(food); break;
+                case 2: dead_food(food); break;
+                case 3: search(food); break;
+                case 4: Ostatok(food); break;
+                case 5: Empty(food); break;
+                case 6: Print(food); break;
+                case 0: Environment.Exit(0); break;
+            }
+        }
+    }
+
+    static void menu()
+    {
+        Console.WriteLine("1.Создать товар");
+        Console.WriteLine("2.Показать просрочку");
+        Console.WriteLine("3.Найти товар по фирме");
+        Console.WriteLine("4.Показать остаток на складе");
+        Console.WriteLine("5.Показать товары, к-рые кончились");
+        Console.WriteLine("6.Показать все товары");
+        Console.WriteLine("0.Выход");
+    }
+
+    static void Create(List<Tovar> food)
+    {
+        string a, b, c, d, e, f, g;
+        Console.Write("Введите название: ");
+        a = Console.ReadLine();
+        Console.Write("Дата изготовления: ");
+        b = Console.ReadLine();
+        Console.Write("Срок годности: ");
+        c = Console.ReadLine();
+        Console.Write("Изготовитель: ");
+        d = Console.ReadLine();
+
+
+        List<string> sells = new List<string>();
+
+        while (true)
+        {
+            Console.Write("Введите дату продажи: ");
+            sells.Add(Console.ReadLine());
+            Console.Write("Введите кол-во проданного товара: ");
+            sells.Add(Console.ReadLine());
+            Console.Write("Добавим ещё? (введите \"n\", чтобы закончить) ");
+            string to_do = Console.ReadLine();
+            if (to_do == "n")
+                break;
+        }
+
+        Console.Write("Изначально на складе: ");
+        f = Console.ReadLine();
+
+
+        Tovar something = new Tovar(a, b, c, d, sells, f);
+        food.Add(something);
+
+        Console.Clear();
+        Console.Write("Товар " + something.name + " добавлен!");
+    }
+    static void dead_food(List<Tovar> food)
+    {
+        int n = 3; // data.Length always 3
+        foreach (Tovar product in food)
+        {
+            string[] str = new string[n];
+            str = product.date_of_begin.Split(new[] { '.', ' ' });
+            int daysBegin = int.Parse(str[0]) + int.Parse(str[1]) * 30 + int.Parse(str[2]) * 365;
+
+            int daysNow = DateTime.Now.Day + DateTime.Now.Month * 30 + DateTime.Now.Year * 365;
+
+            if (daysBegin + int.Parse(product.days_to_end) < daysNow)
+                Console.WriteLine(product.name);
+        }
+    }
+    static void search(List<Tovar> food)
+    {
+        Console.Write("Введите название фирмы: ");
+        string s = Console.ReadLine();
+        foreach (Tovar product in food)
+        {
+            if (product.company.ToLower().Contains(s.ToLower()))
+                Console.WriteLine(product.name); 
+        }  
+    }
+
+    static void Ostatok(List<Tovar> food)
+    {
+        int res = 0;
+        Console.WriteLine("На складе: ");
+        foreach (Tovar tovar in food)
+        {
+            for (int i = 1; i <= tovar.sell.Count; i+=2)
+            {
+                res += int.Parse(tovar.sell[i]);
+            }
+            Console.WriteLine(tovar.name + ": "  + (int.Parse(tovar.CountAll) - res));
+            res = 0;
+        }
+    }
+
+    static void Empty(List<Tovar> food)
+    {
+        int res = 0;
+        Console.WriteLine("Нет в наличии: ");
+        foreach (Tovar tovar in food)
+        {
+            for (int i = 1; i <= tovar.sell.Count; i += 2)
+            {
+                res += int.Parse(tovar.sell[i]);
+            }
+            if (int.Parse(tovar.CountAll) - res == 0) 
+                Console.WriteLine(tovar.name);
+            res = 0;
+        }
+    }
+    static void Print(List<Tovar> food)
+    {
+        foreach (Tovar tovar in food)
+        {
+            Console.WriteLine("Название: " + tovar.name);
+            Console.WriteLine("Производитель: " + tovar.company);
+            Console.WriteLine("Кол-во на складе: " + tovar.CountAll);
+            Console.WriteLine("Дата производства: " + tovar.date_of_begin);
+            Console.WriteLine("Срок годности (в днях): " + tovar.days_to_end);
+
+            for (int i = 0; i < tovar.sell.Count; i += 2)
+                Console.WriteLine(tovar.sell[i] + " было продано " + tovar.sell[i + 1] + "шт.");   // добавить сколько осталось на складе!
+            Console.WriteLine();
+        }
+    }
+    public class Tovar
+    {
+        public string name;
+        public string date_of_begin;
+        public string days_to_end;
+        public string company;
+        public List<string> sell;
+        public string CountAll;
+
+        public Tovar(string name, string date_of_begin, string days_to_end, string company, List<string> sell, string CountAll)
+        {
+            this.name = name;
+            this.date_of_begin = date_of_begin;
+            this.days_to_end = days_to_end;
+            this.company = company;
+            this.sell = sell;
+            this.CountAll = CountAll;
+        }
+    }
+}
