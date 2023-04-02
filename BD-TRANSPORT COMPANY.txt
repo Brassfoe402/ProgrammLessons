@@ -1,0 +1,184 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Transport
+{
+    public class Transoprt
+    {
+        public string Model;
+        public string Type;
+        public string Driver;
+        public string Maintance;
+        public string Fixer;
+        public string Fix;
+        public void TO()
+        {
+            Console.WriteLine(Type + " " + Model + " даты проведения техосмотра" + Maintance);
+            Console.WriteLine();
+        }
+        public void Vod()
+        {
+            Console.WriteLine(Type + " " + Model + ", водитель: " + Driver);
+            Console.WriteLine();
+        }
+        public void Rem()
+        {
+            Console.WriteLine(Type + " " + Model);
+            Console.WriteLine(Fixer + " провёл ремонтные работы: " + Fix);
+            Console.WriteLine();
+        }
+
+    }
+    public class Worker
+    {
+        public string Name;
+        public string Work;
+        public string Experience;
+        public void Work_Experience()
+        {
+            Console.WriteLine(Name);
+            Console.WriteLine(Work);
+            Console.WriteLine("Стаж работы: " + Experience);
+            Console.WriteLine();
+        }
+    }
+
+    public class Admin : Worker
+    {
+        public string Order;
+        public void Orders()
+        {
+            Console.WriteLine(Name + " отдал приказ " + Order);
+            Console.WriteLine();
+        }
+
+    }
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Admin Arthur = new Admin();
+            Arthur.Name = "Краснов Андрей Павлович";
+            Arthur.Work = "Начальник компании";
+            Arthur.Order = "Починить ПАЗ-3205";
+            Arthur.Experience = "2 года";
+
+            Admin Maxim = new Admin();
+            Maxim.Name = "Краснов Андрей Павлович";
+            Maxim.Work = "Заместитель начальника";
+            Maxim.Order = "Заменить коленвал на КамАЗ-43089";
+            Maxim.Experience = "1 год";
+
+
+            Worker Oleg = new Worker();
+            Oleg.Name = "Жданов Олег Сергеевич";
+            Oleg.Work = "Водитель";
+            Oleg.Experience = "2 года";
+
+            Worker Sergey = new Worker();
+            Sergey.Name = "Кузнецов Сергей Викторович";
+            Sergey.Work = "Водитель";
+            Sergey.Experience = "8 месяцев";
+
+            Worker Pavel = new Worker();
+            Pavel.Name = "Антонов Павел Иванович";
+            Pavel.Work = "Водитель";
+            Pavel.Experience = "2 года";
+
+
+            Worker Andrey = new Worker();
+            Andrey.Name = "Денисов Андрей Юрьевич";
+            Andrey.Work = "Слесарь-ремонтник";
+            Andrey.Experience = "6 месяцев";
+
+
+            Transoprt PAZ3205 = new Transoprt();
+            PAZ3205.Model = "ПАЗ-3205";
+            PAZ3205.Type = "Автобус";
+            PAZ3205.Driver = Oleg.Name;
+            PAZ3205.Fixer = Andrey.Name;
+            PAZ3205.Maintance = "02.03.2021,  02.04.2022";
+            PAZ3205.Fix = "19.02.2023: замена карбюратора";
+
+
+            Transoprt LIAZ5292 = new Transoprt();
+            LIAZ5292.Model = "ЛИАЗ - 5292";
+            LIAZ5292.Type = "Автобус";
+            LIAZ5292.Driver = Sergey.Name;
+            LIAZ5292.Fixer = Andrey.Name;
+            LIAZ5292.Maintance = "01.07.2023";
+            LIAZ5292.Fix = "22.04.2021: починка двигателя";
+
+
+            Transoprt KAMAZ43089 = new Transoprt();
+            KAMAZ43089.Model = "КамАЗ-43089";
+            KAMAZ43089.Type = "Грузовик";
+            KAMAZ43089.Fixer = Andrey.Name;
+            KAMAZ43089.Maintance = "12.11.2022,  12.12.2022,  12.01.2023";
+            KAMAZ43089.Driver = Pavel.Name;
+            KAMAZ43089.Fix = "02.10.2021: замена коленвала,  01.12.2022: замена колёс";
+
+
+            Console.WriteLine();
+            bool Menu = true;
+            do
+            {
+                Console.WriteLine("[1] - Перечень дат выполнения техосмотра");
+                Console.WriteLine();
+                Console.WriteLine("[2] - Водители");
+                Console.WriteLine();
+                Console.WriteLine("[3] - Ремонтные работы");
+                Console.WriteLine();
+                Console.WriteLine("[4] - Стаж работы");
+                Console.WriteLine();
+                Console.WriteLine("[5] - Перечень указов");
+                Console.WriteLine();
+                Console.WriteLine("[6] - Выход");
+                int d = Convert.ToInt32(Console.ReadLine());
+                Console.Clear();
+                switch (d)
+                {
+                    case 1:
+                        PAZ3205.Rem();
+                        LIAZ5292.Rem();
+                        KAMAZ43089.Rem();
+                        Console.ReadKey();
+                        break;
+                    case 2:
+                        PAZ3205.Vod();
+                        LIAZ5292.Vod();
+                        KAMAZ43089.Vod();
+                        Console.ReadKey();
+                        break;
+                    case 3:
+                        PAZ3205.Rem();
+                        LIAZ5292.Rem();
+                        KAMAZ43089.Rem();
+                        Console.ReadKey();
+                        break;
+                    case 4:
+                        Arthur.Work_Experience();
+                        Oleg.Work_Experience();
+                        Sergey.Work_Experience();
+                        Andrey.Work_Experience();
+                        Pavel.Work_Experience();
+                        Console.ReadKey();
+                        break;
+                    case 5:
+                        Arthur.Orders();
+                        Maxim.Orders();
+                        Console.ReadKey();
+                        break;
+                    case 6:
+                        Menu = false;
+                        break;
+                }
+                Console.Clear();
+            }
+            while (Menu);
+        }
+    }
+}
